@@ -8,6 +8,9 @@ import matplotlib.pyplot as plt
 import os 
 from torch import FloatTensor
 
+import os
+os.environ['CUDA_VISIBLE_DEVICES'] = '0'
+
 # Paths for image directory and model
 IMDIR='data/test/1noncorona/'
 #sys.argv[1]
@@ -39,7 +42,7 @@ images = files
 print('int(len(files)*1',int(len(files)*1))
 # Configure plots
 fig = plt.figure(figsize=(40,int(len(files)*0.15)))
-rows,cols = int(len(files)*1)/13,13
+rows,cols = int(len(files)*1)/15,15
 
 # Preprocessing transformations
 preprocess=transforms.Compose([
@@ -51,8 +54,9 @@ preprocess=transforms.Compose([
     ])
 
 # Enable gpu mode, if cuda available
-device = torch.device("cpu")
-#"cuda:0" if torch.cuda.is_available() else 
+#device = torch.device("cpu")
+#device = "cuda:0" if torch.cuda.is_available() else 
+device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 predictions=FloatTensor()
 # Perform prediction and plot results
@@ -60,6 +64,8 @@ with torch.no_grad():
     for num,img in enumerate(images):
          img=Image.open(IMDIR+img).convert('RGB')
          inputs=preprocess(img).unsqueeze(0).to(device)
+         predictions = predictions.to(device, non_blocking=True)
+         #all_labels = all_labels.to(device, non_blocking=True)
          outputs = model(inputs)
          _, preds = torch.max(outputs, 1) 
          predictions=torch.cat([predictions,preds.float()])
