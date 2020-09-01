@@ -26,15 +26,6 @@ import seaborn as sns
 import PIL
 
 
-def get_f1(y_true, y_pred): #taken from old keras source code
-    true_positives = K.sum(K.round(K.clip(y_true * y_pred, 0, 1)))
-    possible_positives = K.sum(K.round(K.clip(y_true, 0, 1)))
-    predicted_positives = K.sum(K.round(K.clip(y_pred, 0, 1)))
-    precision = true_positives / (predicted_positives + K.epsilon())
-    recall = true_positives / (possible_positives + K.epsilon())
-    f1_val = 2*(precision*recall)/(precision+recall+K.epsilon())
-    return f1_val
-
 
 def estimate(X_train,y_train):
     i = 0
@@ -44,7 +35,7 @@ def estimate(X_train,y_train):
     ntrain=0.9*len(X_train)
     nval=0.1*len(X_train)
     batch_size=16
-    epochs=20
+    epochs=100
     
     X = []
     X_train=np.reshape(np.array(X_train),[len(X_train),])
@@ -107,7 +98,7 @@ def estimate(X_train,y_train):
     train_generator = train_datagen.flow(X_train, y_train, batch_size=batch_size)
     val_generator= train_datagen.flow(X_val, y_val, batch_size=batch_size)
     opt = keras.optimizers.Adam(learning_rate=0.0001)
-    model.compile(loss='binary_crossentropy', optimizer=opt, metrics=['acc',get_f1])
+    model.compile(loss='binary_crossentropy', optimizer=opt, metrics=['acc'])
     history = model.fit_generator(train_generator,
                                   steps_per_epoch=ntrain//batch_size,epochs=epochs,
                                   validation_data=val_generator,
