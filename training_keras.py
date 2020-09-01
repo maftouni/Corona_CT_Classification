@@ -112,7 +112,7 @@ def estimate(X_train,y_train):
                                   steps_per_epoch=ntrain//batch_size,epochs=epochs,
                                   validation_data=val_generator,
                                   validation_steps=nval // batch_size)
-    model.save_weights("my_model.h5")
+    model.save("Model.h5")
     return model
 
 def predict(X_test,model):
