@@ -50,9 +50,6 @@ python Model_Ensemble.py
 
 We train our models for 100 epochs.
 
-### Activation maps
-![Screenshot](results/activation maps.png)
-
 ### Training graphs
 
 
@@ -71,31 +68,13 @@ Here we **evaluate** the performance of our **best model** on the training data.
 
 **Confusion Matrix**
 ```
-[[50  0  0  0  0  0  0  0  0  0  0]
- [ 0 50  0  0  0  0  0  0  0  0  0]
- [ 0  0 50  0  0  0  0  0  0  0  0]
- [ 0  0  0 50  0  0  0  0  0  0  0]
- [ 0  0  0  0 50  0  0  0  0  0  0]
- [ 0  4  0  0  0 46  0  0  0  0  0]
- [ 0  1  0  0  0  0 49  0  0  0  0]
- [ 0  0  0  0  0  0  0 50  0  0  0]
- [ 0  0  0  0  0  0  0  0 50  0  0]
- [ 0  0  0  0  0  0  0  0  0 50  0]
- [ 0  0  0  0  0  0  0  0  0  0 50]] 
+[[247   4]
+ [  2 290]]
 ```
 **Per class accuracy**
 ```
-Accuracy of class    apple : 100.00 %
-Accuracy of class atm card : 100.00 %
-Accuracy of class   camera : 100.00 %
-Accuracy of class      cat : 100.00 %
-Accuracy of class   banana : 100.00 %
-Accuracy of class   bangle : 92.00 %
-Accuracy of class  battery : 98.00 %
-Accuracy of class   bottle : 100.00 %
-Accuracy of class    broom : 100.00 %
-Accuracy of class     bulb : 100.00 %
-Accuracy of class calender : 100.00 %
+Accuracy: 98.9%
+
 ```
 
 ### Versioning
