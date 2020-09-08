@@ -51,7 +51,7 @@ python Model_Ensemble.py
 We train our models for 100 epochs.
 
 ### Activation maps
-![Screenshot](activation maps.png)
+![Screenshot](results/activation maps.png)
 
 ### Training graphs
 
