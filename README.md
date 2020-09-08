@@ -35,17 +35,6 @@ to train the ensemble model:
 python Model_Ensemble.py
 ```
 
-
-### Training results
-
-|    | Accuracy | Size | Training Time | Training Mode |
-|----|----|----|----|-----|
-| **VGG11** | 96.73 | 515.3 MB  |  900 mins |  scratch |
-| **Resnet18**  | 99.85  | 44.8 MB |  42 mins |  finetune |
-| **MobilenetV2**  | 97.72  | 9.2 MB | 32 mins | transfer |
-(change)
-
-
 **Batch size**: 16
 
 We train our models for 100 epochs.
