@@ -4,6 +4,93 @@ import torch.nn.functional as F
 #from models.networks_other import init_weights
 from torch.nn import init
 
+
+
+classes = ('1noncorona', '2corona')
+
+def matplotlib_imshow(img, one_channel=False):
+    if one_channel:
+        img = img.mean(dim=0)
+    img = img / 2 + 0.5     # unnormalize
+    npimg = img.cpu().numpy()
+    if one_channel:
+        plt.imshow(npimg, cmap="Greys")
+    else:
+        plt.imshow(np.transpose(npimg, (1, 2, 0)))
+        
+def images_to_probs(net, images):
+    '''
+    Generates predictions and corresponding probabilities from a trained
+    network and a list of images
+    '''
+    output = net(images)
+    # convert output probabilities to predicted class
+    _, preds_tensor = torch.max(output, 1)
+    preds = np.squeeze(preds_tensor.cpu().numpy())
+    return preds, [F.softmax(el, dim=0)[i].item() for i, el in zip(preds, output)]
+
+
+def plot_classes_preds(net, images, labels):
+    '''
+    Generates matplotlib Figure using a trained network, along with images
+    and labels from a batch, that shows the network's top prediction along
+    with its probability, alongside the actual label, coloring this
+    information based on whether the prediction was correct or not.
+    Uses the "images_to_probs" function.
+    '''
+    preds, probs = images_to_probs(net, images)
+    # plot the images in the batch, along with predicted and true labels
+    fig = plt.figure(figsize=(55, 55))
+    for idx in np.arange(16):
+        ax = fig.add_subplot(4, 4, idx+1, xticks=[], yticks=[])
+        matplotlib_imshow(images[idx], one_channel=True)
+        ax.set_title("{0}, {1:.1f}%\n(label: {2})".format(
+            classes[preds[idx]],
+            probs[idx] * 100.0,
+            classes[labels[idx]]),
+                    color=("green" if preds[idx]==labels[idx].item() else "red"))
+    return fig
+
+
+class MyDataset(Dataset):
+    def __init__(self, data, target, transform=None):
+        self.data = torch.from_numpy(data).float()
+        self.target = torch.from_numpy(target).long()
+        self.transform = transform
+        
+    def __getitem__(self, index):
+        x = self.data[index]
+        y = self.target[index]
+        
+        if self.transform:
+            x = self.transform(x)
+            
+        
+        return x, y
+    
+    def __len__(self):
+        return len(self.data)
+
+    
+class MyDataset_test(Dataset):
+    def __init__(self, data, transform=None):
+        self.data = torch.from_numpy(data).float()
+        self.transform = transform
+        
+    def __getitem__(self, index):
+        x = self.data[index]
+        
+        if self.transform:
+            x = self.transform(x)
+            
+        
+        return x
+    
+    def __len__(self):
+        return len(self.data)
+    
+
+
 def weights_init_normal(m):
     classname = m.__class__.__name__
     #print(classname)
