@@ -12,7 +12,7 @@ maybe someone can update this
 ### Dataset 
 
 The data for this Data Challenge is selected from an open-source data set on COVID-19 CT images. The raw data have been divided into two subsets: training and test sets. The training dataset is provided to participants to develop their models. The training dataset consists of 251 COVID-19 and 292 non-COVID-19 CT images. In addition to the images, meta-information (e.g., patient information, severity, image caption) is provided in a spreadsheet. The details of
-the original dataset can be found in Zhao et al. (2020).
+the original dataset can be found in [Zhao et al. (2020)](https://arxiv.org/abs/2007.14846).
 
 ### How to run 
 
