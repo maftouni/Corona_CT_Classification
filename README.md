@@ -130,3 +130,4 @@ Maede Maftouni, Andrew Chung Chee Law, Yangze Zhou, Bo Shen
 * "https://github.com/FrancescoSaverioZuppichini/Pytorch-how-and-when-to-use-Module-Sequential-ModuleList-and-ModuleDict"
 * "https://www.kaggle.com/c/understanding_cloud_organization/discussion/112582"
 * "https://stackoverflow.com/questions/53290306/confusion-matrix-and-test-accuracy-for-pytorch-transfer-learning-tutorial"
+* "https://github.com/tengshaofeng/ResidualAttentionNetwork-pytorch"
