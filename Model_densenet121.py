@@ -60,7 +60,7 @@ def estimate(X_train,y_train):
     ntrain=0.8*len(X_train)
     nval=0.2*len(X_train)
     batch_size=16
-    epochs=60
+    epochs=2
     # Number of classes
     num_cpu = multiprocessing.cpu_count()
     num_classes = 2
@@ -256,8 +256,8 @@ def estimate(X_train,y_train):
                     best_model_wts_module = copy.deepcopy(model.state_dict())
                 
     model.load_state_dict(best_model_wts_module)
-    torch.save(model, "Model.pth")
-    torch.save(best_model_wts,"Model_state.pth")
+    torch.save(model, "Model_densenet121.pth")
+    torch.save(best_model_wts,"Model_densenet121_state.pth")
     time_elapsed = time.time() - since
         
     print('Training complete in {:.0f}m {:.0f}s'.format(
@@ -328,7 +328,7 @@ def predict(X_test,model_main=None):
     
         
     model_main = DenseNet121(num_classes,pretrained=True)
-    checkpoint0 = torch.load("Model_state.pth")
+    checkpoint0 = torch.load("Model_densenet121_state.pth")
     model_main.load_state_dict(checkpoint0)
     
     for param in model_main.parameters():
