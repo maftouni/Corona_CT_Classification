@@ -17,6 +17,8 @@ the original dataset can be found in [Zhao et al. (2020)](https://arxiv.org/pdf/
 
 The training data is saved in data/training. If you want to use your own data, just replace everything in data/training. It contains two folders where one is COVID images, and another Non-Covid images. The test data should be put in data/test.
 
+The performance might be a little different due to different performance of a certain seed on different devices.
+
 ```python
 data_prep.py
 ```
