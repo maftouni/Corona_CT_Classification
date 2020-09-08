@@ -1,24 +1,17 @@
-## Pytorch-Image-Classification
+##  INFORMS 2020 QSR Data Challenge on COVID dataset
 
-A simple demo of **image classification** using pytorch. Here, we use a **custom dataset** containing **43956 images** belonging to **11 classes** for training(and validation). Also, we compare three different approaches for training viz. **training from scratch, finetuning the convnet and convnet as a feature extractor**, with the help of **pretrained** pytorch models. The models used include: **VGG11, Resnet18 and MobilenetV2**.
+The code of image classification on COVID dataset using pytorch on INFORMS 2020 QSR Data Challenge on COVID dataset. We use an ensemble model consisting Densenet 121 and Residual Attention model. We first split 15% of the data into validation which is not used in the training process. And we select the model which has the highest validation accuracy. In training, we separately train these two models in an end-to-end manner. Then we extract features from the last 2nd layer, and perform another classifier on the learned concatenated features by these two models on the whole training dataset. Here we use SVM with random gaussian kernels. 
+
 
 
 ### Dependencies
 
 * Python3, Scikit-learn
-* Pytorch, PIL
-* Torchsummary, Tensorboard
-
-```python
-pip install torchsummary # keras-summary
-pip install tensorboard  # tensoflow-logging
-```
-
-**NB**: Update the libraries to their latest versions before training.
+maybe someone can update this
 
 ### How to run
 
-
+The code to run
 python train.py --mode densenet  
 python test.py
 
@@ -131,6 +124,3 @@ Maede Maftouni, Andrew Chung Chee Law, Yangze Zhou, Bo Shen
 * "https://www.kaggle.com/c/understanding_cloud_organization/discussion/112582"
 * "https://stackoverflow.com/questions/53290306/confusion-matrix-and-test-accuracy-for-pytorch-transfer-learning-tutorial"
 * "https://github.com/tengshaofeng/ResidualAttentionNetwork-pytorch"
-* "https://github.com/UCSD-AI4H/COVID-CT"
-* "https://arxiv.org/abs/2007.14846" 
-
