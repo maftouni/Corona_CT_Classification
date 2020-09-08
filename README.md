@@ -55,14 +55,12 @@ Sample classification results
 
 Here we **evaluate** the performance of our **best model** on the training data.
 
-**Accuracy** of the network on the 550 test images: **99.09%** (change)
-
 **Confusion Matrix**
 ```
 [[247   4]
  [  2 290]]
 ```
-**Per class accuracy**
+**Accuracy**
 ```
 Accuracy: 98.9%
 
