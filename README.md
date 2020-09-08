@@ -15,7 +15,8 @@ the original dataset can be found in [Zhao et al. (2020)](https://arxiv.org/pdf/
 
 ### How to run 
 
-To save training images in folders in a dictionary: (talk about change directory?)
+The training data is saved in data/training. If you want to use your own data, just replace everything in data/training. It contains two folders where one is COVID images, and another Non-Covid images. The test data should be put in data/test.
+
 ```python
 data_prep.py
 ```
@@ -35,9 +36,8 @@ to train the ensemble model:
 python Model_Ensemble.py
 ```
 
-**Batch size**: 16
+how to test?
 
-We train our models for 100 epochs.
 
 ### Training graphs
 
