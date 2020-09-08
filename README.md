@@ -118,7 +118,7 @@ Version 1.0
 
 ### Authors
 
-Anil Sathyan
+Maede Maftouni, Andrew Chung Chee Law, Yangze Zhou, Bo Shen
 
 ### Acknowledgments
 * "https://pytorch.org/tutorials/beginner/transfer_learning_tutorial.html"
