@@ -57,15 +57,13 @@ Here we **evaluate** the performance of our **best model** on the training data.
 
 **Confusion Matrix**
 ```
-                  predict covid   predict non-covid
-covid                247                      4
-non-covid             2                      290
-
+                  predict Covid       predict Non-Covid
+Covid                 247                      4
+Non-Covid              2                      290
 ```
 **Accuracy**
 ```
 Accuracy: 98.9%
-
 ```
 
 ### Versioning
