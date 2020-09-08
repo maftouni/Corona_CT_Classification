@@ -45,9 +45,13 @@ python Model_Ensemble.py
 | **MobilenetV2**  | 97.72  | 9.2 MB | 32 mins | transfer |
 (change)
 
-**Batch size**: 64
+
+**Batch size**: 16
 
 We train our models for 100 epochs.
+
+### Activation maps
+![Screenshot](activation maps.png)
 
 ### Training graphs
 
