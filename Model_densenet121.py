@@ -1,37 +1,30 @@
 import os
-os.environ['CUDA_VISIBLE_DEVICES'] = '0,1,2,3'
-
-
+#os.environ['CUDA_VISIBLE_DEVICES'] = '0,1,2,3'
 import pickle
 from datetime import datetime
 import cv2
 import math
 import numpy as np
-import matplotlib.pyplot as plt
 import os
-from keras.models import load_model,Sequential
-from keras.preprocessing.image import ImageDataGenerator
-from keras.optimizers import RMSprop
-from keras import layers
-from keras import models
-from keras import optimizers
-from keras.preprocessing.image import ImageDataGenerator
-from keras.preprocessing.image import img_to_array, load_img
 from sklearn.metrics import confusion_matrix
 from sklearn.model_selection import train_test_split
 import seaborn as sns
 import PIL
 import torch
-from torch.utils.data import Dataset, DataLoader
-import numpy as np
-import torchvision
-from torchvision import datasets, models, transforms
 import torch.utils.data as data
+from torch.utils.data import Dataset, DataLoader, Subset
 from torch.utils.tensorboard import SummaryWriter
 from torch.optim import lr_scheduler
 import torch.nn as nn
 import torch.optim as optim
-from torch.optim import lr_scheduler
+from torch.nn import functional as F
+from torch.nn import init
+from torch.autograd import Variable
+import torchvision
+from torchvision import datasets, models, transforms
+from torch import nn
+
+
 import time, copy, argparse
 import multiprocessing
 from matplotlib import pyplot as plt
@@ -40,128 +33,25 @@ from torch import FloatTensor
 from sklearn.model_selection import KFold
 from sklearn.model_selection import StratifiedKFold
 from sklearn.model_selection import train_test_split
-from torch.utils.data import Subset 
-from torch.nn import functional as F
-import matplotlib.pyplot as plt
+
+
+
 from sklearn.model_selection import cross_val_score
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import f1_score
-from torch.utils.data import Dataset, DataLoader
-
-
-
-from sklearn.ensemble import RandomForestClassifier
 from sklearn.ensemble import ExtraTreesClassifier
-from sklearn.tree import DecisionTreeClassifier
-from sklearn.ensemble import AdaBoostClassifier
-from sklearn.ensemble import GradientBoostingClassifier
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.ensemble import BaggingClassifier
+from sklearn import svm
 import random
 
-from sklearn.ensemble import RandomForestClassifier
-from sklearn import svm
+
+import functools
 import joblib
 
-from torch import nn
-import torch
-from torchvision import models
-import functools
-from torch.autograd import Variable
-import torchvision
-from torch.nn import functional as F
-from torch.nn import init
 from models import DenseNet121
-    
-classes = ('1noncorona', '2corona')
-
-def matplotlib_imshow(img, one_channel=False):
-    if one_channel:
-        img = img.mean(dim=0)
-    img = img / 2 + 0.5     # unnormalize
-    npimg = img.cpu().numpy()
-    if one_channel:
-        plt.imshow(npimg, cmap="Greys")
-    else:
-        plt.imshow(np.transpose(npimg, (1, 2, 0)))
-        
-def images_to_probs(net, images):
-    '''
-    Generates predictions and corresponding probabilities from a trained
-    network and a list of images
-    '''
-    output = net(images)
-    # convert output probabilities to predicted class
-    _, preds_tensor = torch.max(output, 1)
-    preds = np.squeeze(preds_tensor.cpu().numpy())
-    return preds, [F.softmax(el, dim=0)[i].item() for i, el in zip(preds, output)]
-
-
-def plot_classes_preds(net, images, labels):
-    '''
-    Generates matplotlib Figure using a trained network, along with images
-    and labels from a batch, that shows the network's top prediction along
-    with its probability, alongside the actual label, coloring this
-    information based on whether the prediction was correct or not.
-    Uses the "images_to_probs" function.
-    '''
-    preds, probs = images_to_probs(net, images)
-    # plot the images in the batch, along with predicted and true labels
-    fig = plt.figure(figsize=(55, 55))
-    for idx in np.arange(16):
-        ax = fig.add_subplot(4, 4, idx+1, xticks=[], yticks=[])
-        matplotlib_imshow(images[idx], one_channel=True)
-        ax.set_title("{0}, {1:.1f}%\n(label: {2})".format(
-            classes[preds[idx]],
-            probs[idx] * 100.0,
-            classes[labels[idx]]),
-                    color=("green" if preds[idx]==labels[idx].item() else "red"))
-    return fig
-
-
-class MyDataset(Dataset):
-    def __init__(self, data, target, transform=None):
-        self.data = torch.from_numpy(data).float()
-        self.target = torch.from_numpy(target).long()
-        self.transform = transform
-        
-    def __getitem__(self, index):
-        x = self.data[index]
-        y = self.target[index]
-        
-        if self.transform:
-            x = self.transform(x)
-            
-        
-        return x, y
-    
-    def __len__(self):
-        return len(self.data)
-
-    
-class MyDataset_test(Dataset):
-    def __init__(self, data, transform=None):
-        self.data = torch.from_numpy(data).float()
-        self.transform = transform
-        
-    def __getitem__(self, index):
-        x = self.data[index]
-        
-        if self.transform:
-            x = self.transform(x)
-            
-        
-        return x
-    
-    def __len__(self):
-        return len(self.data)
-        
-        
-            
-
+from utililties import *  
     
 
-def estimate(X_train,y_train,X_test,y_test):
+def estimate(X_train,y_train):
     i = 0
     ii = 0
     nrows=256
@@ -170,7 +60,7 @@ def estimate(X_train,y_train,X_test,y_test):
     ntrain=0.8*len(X_train)
     nval=0.2*len(X_train)
     batch_size=16
-    epochs=100
+    epochs=60
     # Number of classes
     num_cpu = multiprocessing.cpu_count()
     num_classes = 2
@@ -184,26 +74,6 @@ def estimate(X_train,y_train,X_test,y_test):
     
     
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    
-    X_t = []
-    X_test=np.reshape(np.array(X_test),[len(X_test),])
-    
-    for img in list(range(0,len(X_test))):
-        if X_test[img].ndim>=3:
-            X_t.append(np.moveaxis(cv2.resize(X_test[img][:,:,:3], (nrows,ncolumns), interpolation=cv2.INTER_CUBIC), -1, 0))
-        else:
-            smimg= cv2.cvtColor(X_test[img],cv2.COLOR_GRAY2RGB)
-            X_t.append(np.moveaxis(cv2.resize(smimg, (nrows,ncolumns), interpolation=cv2.INTER_CUBIC), -1, 0))
-        
-        if y_test[img]=='COVID':
-            y_test[img]=1
-        elif y_test[img]=='NonCOVID' :
-            y_test[img]=0
-        else:
-            continue
-
-    x_test = np.array(X_t)
-    y_test = np.array(y_test)
     
     
     X = []
@@ -230,7 +100,6 @@ def estimate(X_train,y_train,X_test,y_test):
     labels_all = []
     
     X_train, X_val, y_train, y_val = train_test_split(x, y_train, test_size=0.2, random_state=2)
-    
     
     
     image_transforms = { 
@@ -277,22 +146,12 @@ def estimate(X_train,y_train,X_test,y_test):
         'valid' : data.DataLoader(valid_data, batch_size=batch_size, shuffle=True,
                             num_workers=num_cpu, pin_memory=True, worker_init_fn=np.random.seed(7), drop_last=False)  
 }
-    
    
-   
-     
-    
         
-    model = ResidualAttentionModel(10)
-    checkpoint0 = torch.load('../model_resAttention.pth')
-    model.load_state_dict(checkpoint0)
-    num_ftrs = model.fc.in_features
-       
-    model.fc = nn.Linear(num_ftrs,2 )
-   
-      
+    model = DenseNet121(num_classes,pretrained=True)
     
     model = nn.DataParallel(model, device_ids=[ 0, 1,2, 3]).cuda()
+    #print(model)
     criterion = nn.CrossEntropyLoss()
     #optimizer = optim.SGD(model.parameters(), lr=0.06775, momentum=0.5518,weight_decay=0.000578)
     optimizer = optim.Adam(model.parameters(), lr=0.0001,weight_decay=0.05)
@@ -300,7 +159,7 @@ def estimate(X_train,y_train,X_test,y_test):
     #scheduler = lr_scheduler.StepLR(optimizer, step_size=35, gamma=0.1)
     
    
-    best_acc = 0.0
+    best_acc = -1
     best_f1 = 0.0
     best_epoch = 0
     best_loss = 100000
@@ -388,7 +247,7 @@ def estimate(X_train,y_train,X_test,y_test):
 
             # deep copy the model
                 if phase == 'valid' and epoch_acc > best_acc:
-                
+                    print('dffffffffffffffffffffffff')
                     best_f1 = epoch_f1
                     best_acc = epoch_acc
                     best_loss = epoch_loss
@@ -468,7 +327,7 @@ def predict(X_test,model_main=None):
     num_classes = 2
     
         
-    model_main = ResidualAttentionModel(2)
+    model_main = DenseNet121(num_classes,pretrained=True)
     checkpoint0 = torch.load("Model_state.pth")
     model_main.load_state_dict(checkpoint0)
     
@@ -562,18 +421,16 @@ def predict(X_test,model_main=None):
     return y_pred,y_pred2
 
 
-dbfile = open('training.pickle', 'rb')      
+dbfile = open('sample.pickle', 'rb')      
 db = pickle.load(dbfile) 
 
-dbfile = open('test.pickle', 'rb')      
+
+
+model = estimate(db['X_tr'],db['y_tr'])
+
+
+dbfile = open('sample.pickle', 'rb')      
 db_test = pickle.load(dbfile) 
-
-model = estimate(db['X_tr'],db['y_tr'],db_test['X_tr'],db_test['y_tr'])
-
-
-dbfile = open('test.pickle', 'rb')      
-db_test = pickle.load(dbfile) 
-
             
             
 y_pred,y_pred2 = predict(db_test['X_tr'])

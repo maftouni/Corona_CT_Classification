@@ -4,7 +4,7 @@ config =  tf.compat.v1.ConfigProto( device_count = {'GPU': 4 } )
 sess = tf.compat.v1.Session(config=config) 
 from tensorflow.compat.v1.keras import backend as K
 K.set_session(sess)
-#keras.backend.set_session(sess)
+
 
 import pickle
 import cv2
@@ -69,30 +69,10 @@ def estimate(X_train,y_train):
     
     model = models.Sequential()
     model.add(tf.keras.applications.DenseNet169(include_top=False, input_shape = (224, 224, 3) , weights='imagenet',pooling= 'avg'))
-    #model.add(layers.Flatten())
-    #model.add(layers.GlobalAveragePooling2D())
     model.add(layers.Dense(512, activation='relu'))
     model.add(layers.Dense(1, activation='sigmoid'))
     model.summary()
-    
-    
-    #model.add(layers.Conv2D(32, (3, 3), activation='relu',input_shape=(224, 224, 3)))
-    #model.add(layers.MaxPooling2D((2, 2)))
-    #model.add(layers.Conv2D(64, (3, 3), activation='relu'))
-    #model.add(layers.MaxPooling2D((2, 2)))
-    #model.add(layers.Conv2D(128, (3, 3), activation='relu'))
-    #model.add(layers.MaxPooling2D((2, 2)))
-    #model.add(layers.Conv2D(128, (3, 3), activation='relu'))
-    #model.add(layers.MaxPooling2D((2, 2)))
-    #model.add(layers.Flatten())
-    #model.add(layers.Dropout(0.5))
-    #model.add(layers.Dense(512, activation='relu'))
-    #model.add(layers.Dense(1, activation='sigmoid'))
-    
-        
-    
-  
-    
+      
     
     
     train_generator = train_datagen.flow(X_train, y_train, batch_size=batch_size)
@@ -144,9 +124,7 @@ def predict(X_test,model):
 
 dbfile = open('training.pickle', 'rb')      
 db = pickle.load(dbfile) 
-#print(db)
 print(len(np.array(db['y_tr'])))
-#print(np.array(db['X_tr'])[0].shape)
 
 
 model = estimate(db['X_tr'],db['y_tr'])

@@ -37,5 +37,5 @@ print(len(diction['X_tr']))
 print(diction['y_tr'])
 print(diction['X_tr'][0].shape)
 
-with open('test.pickle', 'wb') as handle:
+with open('training.pickle', 'wb') as handle:
     pickle.dump(diction, handle, protocol=pickle.HIGHEST_PROTOCOL)

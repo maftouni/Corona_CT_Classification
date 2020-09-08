@@ -7,14 +7,6 @@ import math
 import numpy as np
 import matplotlib.pyplot as plt
 import os
-from keras.models import load_model,Sequential
-from keras.preprocessing.image import ImageDataGenerator
-from keras.optimizers import RMSprop
-from keras import layers
-from keras import models
-from keras import optimizers
-from keras.preprocessing.image import ImageDataGenerator
-from keras.preprocessing.image import img_to_array, load_img
 from sklearn.metrics import confusion_matrix
 from sklearn.model_selection import train_test_split
 import seaborn as sns
@@ -50,12 +42,11 @@ from sklearn.metrics import accuracy_score
 from sklearn.metrics import f1_score
 from sklearn.ensemble import ExtraTreesClassifier
 from sklearn import svm
+import random
 
 
 import functools
 import joblib
-
-
 
 from models import ResidualAttentionModel
 from utililties import *          
@@ -70,8 +61,7 @@ def estimate(X_train,y_train):
     ntrain=0.8*len(X_train)
     nval=0.2*len(X_train)
     batch_size=16
-    epochs=100
-    # Number of classes
+    epochs= 60
     num_cpu = multiprocessing.cpu_count()
     num_classes = 2
     torch.manual_seed(8)
@@ -84,27 +74,6 @@ def estimate(X_train,y_train):
     
     
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    
-    X_t = []
-    X_test=np.reshape(np.array(X_test),[len(X_test),])
-    
-    for img in list(range(0,len(X_test))):
-        if X_test[img].ndim>=3:
-            X_t.append(np.moveaxis(cv2.resize(X_test[img][:,:,:3], (nrows,ncolumns), interpolation=cv2.INTER_CUBIC), -1, 0))
-        else:
-            smimg= cv2.cvtColor(X_test[img],cv2.COLOR_GRAY2RGB)
-            X_t.append(np.moveaxis(cv2.resize(smimg, (nrows,ncolumns), interpolation=cv2.INTER_CUBIC), -1, 0))
-        
-        if y_test[img]=='COVID':
-            y_test[img]=1
-        elif y_test[img]=='NonCOVID' :
-            y_test[img]=0
-        else:
-            continue
-
-    x_test = np.array(X_t)
-    y_test = np.array(y_test)
-    
     
     X = []
     X_train=np.reshape(np.array(X_train),[len(X_train),])
@@ -184,11 +153,11 @@ def estimate(X_train,y_train):
     
         
     model = ResidualAttentionModel(10)
-    checkpoint0 = torch.load('../model_resAttention.pth')
+    checkpoint0 = torch.load('model_resAttention.pth')
     model.load_state_dict(checkpoint0)
     num_ftrs = model.fc.in_features
        
-    model.fc = nn.Linear(num_ftrs,2 )
+    model.fc = nn.Linear(num_ftrs,num_classes)
    
       
     
@@ -303,8 +272,8 @@ def estimate(X_train,y_train):
         
     print('Training complete in {:.0f}m {:.0f}s'.format(
     time_elapsed // 60, time_elapsed % 60))
-    print('Best test Acc: {:4f}'.format(best_acc))
-    print('Best test f1: {:4f}'.format(best_f1))
+    print('Best validation Acc: {:4f}'.format(best_acc))
+    print('Best validation f1: {:4f}'.format(best_f1))
     print('best epoch: ', best_epoch)
      
     ## Replacing the last fully connected layer with SVM or ExtraTrees Classifiers  
@@ -457,7 +426,7 @@ def predict(X_test,model_main=None):
     return y_pred,y_pred2
 
 
-dbfile = open('training.pickle', 'rb')      
+dbfile = open('sample.pickle', 'rb')      
 db = pickle.load(dbfile) 
 
 
@@ -465,13 +434,13 @@ db = pickle.load(dbfile)
 model = estimate(db['X_tr'],db['y_tr'])
 
 
-dbfile = open('training.pickle', 'rb')      
+dbfile = open('sample.pickle', 'rb')      
 db_test = pickle.load(dbfile) 
             
             
 y_pred,y_pred2 = predict(db_test['X_tr'])
-#print(y_pred)
-#print(db_test['y_tr'])
+print(y_pred)
+print(db_test['y_tr'])
 acc= accuracy_score(db_test['y_tr'], y_pred)
 acc2= accuracy_score(db_test['y_tr'], y_pred2)
 print(acc,acc2)

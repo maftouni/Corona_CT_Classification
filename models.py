@@ -76,7 +76,7 @@ class DenseNet121(nn.Module):
         self.norm5=densenet.features.norm5
         
         self.num_ftrs = densenet.classifier.in_features
-        self.classifier = nn.Linear(self.num_ftrs,self.num_classes )       
+        self.fc = nn.Linear(self.num_ftrs,self.num_classes )       
     
     def forward(self, x):
         
@@ -96,7 +96,7 @@ class DenseNet121(nn.Module):
         e5= F.adaptive_avg_pool2d(e5, (1, 1)).view(e5.shape[0], -1)
         #print('ee5',list(e5.shape))
     
-        x_out = self.classifier(e5)
+        x_out = self.fc(e5)
         #print("shape of x_out",list(x_out .shape))
          
         return x_out
@@ -148,7 +148,7 @@ class ResidualAttentionModel(nn.Module):
         self.conv1 = nn.Sequential(
             nn.Conv2d(3, 32, kernel_size=3, stride=1, padding=1, bias=False),
             nn.BatchNorm2d(32),
-            nn.ReLU(inplace=True)
+            nn.ReLU(inplace=True))
         self.residual_block1 = ResidualBlock(32, 128)  # 32*32
         self.attention_module1 = AttentionModule_stage1_cifar(128, 128, size1=(input_size, input_size), size2=(int(input_size/2), int(input_size/2)))  # 32*32
         self.residual_block2 = ResidualBlock(128, 256, 2)  # 16*16
