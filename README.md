@@ -6,8 +6,7 @@ The code of image classification on COVID dataset using pytorch on INFORMS 2020 
 
 ### Dependencies
 
-* Python3, Scikit-learn
-maybe someone can update this
+* Python3, Scikit-learn, torch (Please refer to requirement.txt) 
 
 ### Dataset 
 
