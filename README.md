@@ -61,6 +61,7 @@ We train our models for 100 epochs.
 Sample classification results
 
 ![Screenshot](results/all_corona_test_prediction_result_all_Bo_final.png)
+![Screenshot](results/all_corona_test_prediction_result_all_Bo_final.png)
 
 ### Evaluation
 
