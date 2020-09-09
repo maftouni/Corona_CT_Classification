@@ -40,6 +40,9 @@ python Model_Ensemble.py
 
 how to test?
 
+### Network Structure
+![Screenshot](results/network_structure.png)
+
 
 ### Training graphs
 
