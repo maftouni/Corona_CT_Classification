@@ -38,13 +38,9 @@ to train the ensemble model:
 python Model_Ensemble.py
 ```
 
-how to test?
 
 ### Network Structure
 ![Screenshot](results/network_structure2.png)
-
-
-### Training graphs
 
 
 ### Sample outputs
