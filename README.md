@@ -75,10 +75,6 @@ Version 1.0
 
 Maede Maftouni, Andrew Chung Chee Law, Yangze Zhou, Bo Shen
 
-<ul>
-<li>Line 1</li>
-<li>Line 2</li>
-</ul>
 
 ### Acknowledgments
 * "https://pytorch.org/tutorials/beginner/transfer_learning_tutorial.html"
