@@ -195,6 +195,33 @@ class ResidualAttentionModel(nn.Module):
         return out    
 
     
-
+class MyEnsemble(nn.Module):
+    def __init__(self, modelA, modelB,a,b, nb_classes=2):
+        super(MyEnsemble, self).__init__()
+        self.modelA = modelA
+        self.modelB = modelB
+       
+        # Remove last linear layer
+        self.modelA.fc = nn.Identity()
+        self.modelB.fc = nn.Identity()
+        
+        # Create new classifier
+        
+        self.classifier = nn.Linear(a+b, 755)
+        self.classifier2 = nn.Linear(755, nb_classes)
+       
+        
+    def forward(self, x):
+        
+        x1 = self.modelA(x.clone())  # clone to make sure x is not changed by inplace methods
+        x1 = x1.view(x1.size(0), -1)
+        x2 = self.modelB(x) 
+        x2 = x2.view(x2.size(0), -1)  
+        x = torch.cat((x1, x2), dim=1)  
+        x = self.classifier(F.relu(x))
+        x = self.classifier2(F.relu(x))
+     
+        return x    
+    
     
     
