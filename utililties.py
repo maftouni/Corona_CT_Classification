@@ -44,7 +44,7 @@ def plot_classes_preds(net, images, labels):
     fig = plt.figure(figsize=(55, 55))
     for idx in np.arange(16):
         ax = fig.add_subplot(4, 4, idx+1, xticks=[], yticks=[])
-        matplotlib_imshow(images[idx], one_channel=True)
+        matplotlib_imshow(images[idx], one_channel=False)
         ax.set_title("{0}, {1:.1f}%\n(label: {2})".format(
             classes[preds[idx]],
             probs[idx] * 100.0,
