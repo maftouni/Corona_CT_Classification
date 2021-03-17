@@ -1,6 +1,6 @@
 ##  INFORMS 2020 QSR Data Challenge on "CT Scan Diagnosis for COVID-19"
 
-### We were selected as one of finalists for this challenge and Won the runner-up award!!
+### We were selected as one of finalists for this challenge and won the runner-up award!!
 
 The code of image classification on COVID dataset using pytorch on [INFORMS 2020 QSR Data Challenge](https://connect.informs.org/qsr/awards) on COVID dataset. We use an ensemble model consisting Densenet 121 and Residual Attention model. We first split 15% of the data into validation which is not used in the training process. And we select the model which has the highest validation accuracy. Densenet 121 is pretrained on [ImageNet](http://www.image-net.org), and Residual Attention model is pretrained on [Cifar-10](https://www.cs.toronto.edu/~kriz/cifar.html). In training, we separately train these two pretrained models in an end-to-end manner. Then we extract features from the last 2nd layer, and perform another classifier on the learned concatenated features by these two models on the whole training dataset. Here we use SVM with random gaussian kernels. 
 
