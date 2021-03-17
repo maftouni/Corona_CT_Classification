@@ -52,7 +52,7 @@ Sample classification results
 ![Screenshot](results/all_corona_test_prediction_result_all_Bo_final.png)
 
 Attention can be viewed, broadly, as a tool to focus the most on the most informative parts of the image:
-![Screenshot](results/activation_maps.png)
+![Screenshot](results/figure4.png)
 
 ### Evaluation
 
