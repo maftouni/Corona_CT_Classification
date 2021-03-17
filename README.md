@@ -53,7 +53,7 @@ Sample classification results
 
 # Attention can be viewed, broadly, as a tool to focus the most on the most informative parts of the image:
 
-![Screenshot](results/figure4.png)
+![Screenshot](results/Grad_Cam.png)
 
 ### Evaluation
 
