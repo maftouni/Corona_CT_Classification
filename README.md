@@ -15,6 +15,11 @@ The code of image classification on COVID dataset using pytorch on [INFORMS 2020
 The data for this Data Challenge is selected from an open-source data set on COVID-19 CT images. The raw data have been divided into two subsets: training and test sets. The training dataset is provided to participants to develop their models. The training dataset consists of 251 COVID-19 and 292 non-COVID-19 CT images. In addition to the images, meta-information (e.g., patient information, severity, image caption) is provided in a spreadsheet. The details of
 the original dataset can be found in [Zhao et al. (2020)](https://arxiv.org/pdf/2003.13865.pdf).
 
+### Curated Dataset 
+We extended this work by building a large lung CT scan dataset for COVID-19 curating data from 7 public datasets. The dataset and the dataset description are available in the following links:
+https://www.kaggle.com/maedemaftouni/large-covid19-ct-slice-dataset
+https://github.com/maftouni/Curated_Covid_CT.git
+
 ### How to run 
 
 The training data is saved in data/training. If you want to use your own data, just replace everything in data/training. It contains two folders where one is COVID images, and another Non-Covid images. The test data should be put in data/test.
