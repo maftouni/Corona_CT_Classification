@@ -80,9 +80,10 @@ Accuracy: 98.9%
 
 Version 1.0
 
-### Authors
+### Citation
+If you use this code for your research, please cite:
 
-Maede Maftouni, Andrew Chung Chee Law, Yangze Zhou, Bo Shen
+Maftouni, M., Law, A.C, Shen, B., Zhou, Y., Yazdi, N., and Kong, Z.J. “A Robust Ensemble-Deep Learning Model for COVID-19 Diagnosis based on an Integrated CT Scan Images Database,” Proceedings of the 2021 Industrial and Systems Engineering Conference, Virtual Conference, May 22-25, 2021.
 
 
 ### Acknowledgments
