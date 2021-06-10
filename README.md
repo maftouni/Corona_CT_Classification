@@ -85,7 +85,7 @@ If you use this code for your research, please cite:
 
 Maftouni, M., Law, A.C, Shen, B., Zhou, Y., Yazdi, N., and Kong, Z.J. “A Robust Ensemble-Deep Learning Model for COVID-19 Diagnosis based on an Integrated CT Scan Images Database,” Proceedings of the 2021 Industrial and Systems Engineering Conference, Virtual Conference, May 22-25, 2021.
 
-You can find the paper [here](https://www.researchgate.net/publication/352296409_A_Robust_Ensemble-Deep_Learning_Model_for_COVID-19_Diagnosis_based_on_an_Integrated_CT_Scan_Images_Database)
+You can find the paper [here](https://www.researchgate.net/publication/352296409_A_Robust_Ensemble-Deep_Learning_Model_for_COVID-19_Diagnosis_based_on_an_Integrated_CT_Scan_Images_Database).
 ### Acknowledgments
 * "https://pytorch.org/tutorials/beginner/transfer_learning_tutorial.html"
 * "https://pytorch.org/tutorials/beginner/finetuning_torchvision_models_tutorial.html"
